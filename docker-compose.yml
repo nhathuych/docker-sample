@@ -1,0 +1,23 @@
+# Tìm hiểu dc từ nguồn: https://www.youtube.com/watch?v=hD4HKtP6-jo
+
+version: "3"
+
+services:
+  node-web:
+    image: node_app
+    ports:
+      - 3001:3000
+    # depends on(phụ thuộc vào): Vì db phải chạy trước mới thì node web mới chạy dc
+    depends_on:
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      # mount volume thư mục /var/lib/postgresql/data của container ra thư mục db-data trên máy host
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  # khai báo khối volume db-data trên máy host để postgres lưu dữ liệu vào
+  db-data:
